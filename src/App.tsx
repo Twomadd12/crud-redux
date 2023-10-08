@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ProductListCont from "./components/product/list/product-list.container";
+import ProductList from "./components/product/list/product-list.component";
+import CreateButton from "./components/CreateButton";
+import Modal from './components/Modal';
+import { useState } from "react";
 
-function App() {
+export function App() {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Grocery list</h1>
+      <ProductListCont
+        render={(products, loading, error) => (
+          <>
+            {loading ? (
+              <div>Loading...</div>
+            ) : error ? (
+              <div>{error}</div>
+            ) : (
+              <ProductList products={products} />
+            )}
+          </>
+        )}
+      />
+      <CreateButton onClick={openModal} buttonText="+" />
+      
+      
+      <Modal visible={modalVisible} title="Модальное окно" onClose={closeModal}>
+        <p>Содержимое модального окна</p>
+      </Modal>
+      
+      
     </div>
   );
 }
-
-export default App;
